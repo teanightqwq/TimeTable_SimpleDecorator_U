@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Timetable - Simple Decorator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 University Timetable</h1>
+            <p class="subtitle">Create your visually pleasing course schedule</p>
+        </header>
+
+        <div class="controls">
+            <button id="addCourseBtn" class="btn btn-primary">+ Add Course</button>
+            <button id="clearAllBtn" class="btn btn-danger">Clear All</button>
+            <button id="exportBtn" class="btn btn-secondary">Export</button>
+            <button id="importBtn" class="btn btn-secondary">Import</button>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+        </div>
+
+        <div id="courseModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalTitle">Add Course</h2>
+                <form id="courseForm">
+                    <div class="form-group">
+                        <label for="courseName">Course Name:</label>
+                        <input type="text" id="courseName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseInstructor">Instructor:</label>
+                        <input type="text" id="courseInstructor">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseLocation">Location:</label>
+                        <input type="text" id="courseLocation">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseDay">Day:</label>
+                        <select id="courseDay" required>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseStartTime">Start Time:</label>
+                        <input type="time" id="courseStartTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseEndTime">End Time:</label>
+                        <input type="time" id="courseEndTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseColor">Color:</label>
+                        <input type="color" id="courseColor" value="#4CAF50">
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Save Course</button>
+                        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="timetable-wrapper">
+            <div class="timetable" id="timetable">
+                <div class="time-column">
+                    <div class="time-header"></div>
+                    <div class="time-slot">08:00</div>
+                    <div class="time-slot">09:00</div>
+                    <div class="time-slot">10:00</div>
+                    <div class="time-slot">11:00</div>
+                    <div class="time-slot">12:00</div>
+                    <div class="time-slot">13:00</div>
+                    <div class="time-slot">14:00</div>
+                    <div class="time-slot">15:00</div>
+                    <div class="time-slot">16:00</div>
+                    <div class="time-slot">17:00</div>
+                    <div class="time-slot">18:00</div>
+                    <div class="time-slot">19:00</div>
+                    <div class="time-slot">20:00</div>
+                </div>
+
+                <div class="day-column" data-day="Monday">
+                    <div class="day-header">Monday</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Tuesday">
+                    <div class="day-header">Tuesday</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Wednesday">
+                    <div class="day-header">Wednesday</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Thursday">
+                    <div class="day-header">Thursday</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Friday">
+                    <div class="day-header">Friday</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Saturday">
+                    <div class="day-header">Saturday</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Sunday">
+                    <div class="day-header">Sunday</div>
+                    <div class="day-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-list">
+            <h2>📋 Course List</h2>
+            <div id="courseListContainer"></div>
+        </div>
+
+        <footer>
+            <p>All data is stored locally in your browser 💾</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
