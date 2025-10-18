@@ -8,6 +8,7 @@ const clearAllBtn = document.getElementById('clearAllBtn');
 const exportBtn = document.getElementById('exportBtn');
 const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
+const weekFilter = document.getElementById('weekFilter');
 const courseModal = document.getElementById('courseModal');
 const closeModal = document.querySelector('.close');
 const courseForm = document.getElementById('courseForm');
@@ -19,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCoursesFromStorage();
     renderTimetable();
     renderCourseList();
+    setupTimeQuickPickersMinute();
+    setupTimeQuickPickersHour();
+    setupWeekFilter();
+    setupTitleDisplayMode();
 });
 
 // Event listeners
@@ -27,7 +32,7 @@ addCourseBtn.addEventListener('click', () => {
 });
 
 clearAllBtn.addEventListener('click', () => {
-    if (confirm('Are you sure you want to clear all courses? This action cannot be undone.')) {
+    if (confirm('你真的要开摆吗？习惯就很难再卷了💔')) {
         courses = [];
         saveCoursesToStorage();
         renderTimetable();
@@ -69,23 +74,42 @@ courseForm.addEventListener('submit', (e) => {
     saveCourse();
 });
 
-// Modal functions
+// 周期表
+let currentWeekFilter = 'both'; // both | odd | even
+
+function setupWeekFilter() {
+    if (weekFilter) {
+        weekFilter.value = currentWeekFilter;
+        weekFilter.addEventListener('change', () => {
+            currentWeekFilter = weekFilter.value;
+            renderTimetable();
+            renderCourseList();
+        });
+    }
+}
+
+// 模态逻辑
 function openModal(course = null) {
     if (course) {
         editingCourseId = course.id;
-        modalTitle.textContent = 'Edit Course';
-        document.getElementById('courseName').value = course.name;
+    modalTitle.textContent = '编辑课程';
+        document.getElementById('courseCode').value = course.code;
+    document.getElementById('courseName').value = course.name || '';
         document.getElementById('courseInstructor').value = course.instructor || '';
         document.getElementById('courseLocation').value = course.location || '';
         document.getElementById('courseDay').value = course.day;
         document.getElementById('courseStartTime').value = course.startTime;
         document.getElementById('courseEndTime').value = course.endTime;
         document.getElementById('courseColor').value = course.color;
+        const wt = document.getElementById('courseWeekType');
+        if (wt) wt.value = course.weekType || 'both';
     } else {
         editingCourseId = null;
-        modalTitle.textContent = 'Add Course';
+        modalTitle.textContent = '添加课程';
         courseForm.reset();
         document.getElementById('courseColor').value = getRandomColor();
+        const wt = document.getElementById('courseWeekType');
+        if (wt) wt.value = 'both';
     }
     courseModal.style.display = 'block';
 }
@@ -96,8 +120,9 @@ function closeModalWindow() {
     editingCourseId = null;
 }
 
-// Course operations
+// 课程处理
 function saveCourse() {
+    const code = document.getElementById('courseCode').value;
     const name = document.getElementById('courseName').value;
     const instructor = document.getElementById('courseInstructor').value;
     const location = document.getElementById('courseLocation').value;
@@ -105,22 +130,26 @@ function saveCourse() {
     const startTime = document.getElementById('courseStartTime').value;
     const endTime = document.getElementById('courseEndTime').value;
     const color = document.getElementById('courseColor').value;
+    const weekTypeEl = document.getElementById('courseWeekType');
+    const weekType = weekTypeEl ? weekTypeEl.value : 'both';
 
-    // Validate time
+    // 时间验证
     if (startTime >= endTime) {
-        alert('End time must be after start time!');
+        alert('不接受跨天课程😠！');
         return;
     }
 
     const course = {
         id: editingCourseId || Date.now().toString(),
+        code,
         name,
         instructor,
         location,
         day,
         startTime,
         endTime,
-        color
+        color,
+        weekType
     };
 
     if (editingCourseId) {
@@ -137,7 +166,7 @@ function saveCourse() {
 }
 
 function deleteCourse(id) {
-    if (confirm('Are you sure you want to delete this course?')) {
+    if (confirm('你真的要抛弃这门课程吗?')) {
         courses = courses.filter(c => c.id !== id);
         saveCoursesToStorage();
         renderTimetable();
@@ -157,10 +186,19 @@ function renderTimetable() {
     // Clear all day contents
     document.querySelectorAll('.day-content').forEach(content => {
         content.innerHTML = '';
+        // Dynamic height based on number of slots
+        const slots = document.querySelectorAll('.time-column .time-slot').length;
+        const pixelsPerHour = 60; // matched with background-size 60px
+        content.style.height = `${slots * pixelsPerHour}px`;
+        content.style.background = `linear-gradient(to bottom, transparent 0%, transparent calc(${pixelsPerHour}px - 1px), #e2e8f0 calc(${pixelsPerHour}px - 1px), #e2e8f0 ${pixelsPerHour}px)`;
+        content.style.backgroundSize = `100% ${pixelsPerHour}px`;
     });
 
     // Render each course
     courses.forEach(course => {
+        // Backward compatibility default
+        const wt = course.weekType || 'both';
+        if (!matchWeekFilter(wt, currentWeekFilter)) return;
         const dayColumn = document.querySelector(`.day-column[data-day="${course.day}"] .day-content`);
         if (dayColumn) {
             const courseBlock = createCourseBlock(course);
@@ -187,8 +225,14 @@ function createCourseBlock(course) {
     block.style.height = `${height}px`;
     
     // Add content
-    let html = `<div class="course-name">${course.name}</div>`;
-    html += `<div class="course-time">${course.startTime} - ${course.endTime}</div>`;
+    // Title display based on mode
+    const primaryTitle = getPrimaryTitle(course);
+    let html = `<div class="course-code">${primaryTitle}</div>`;
+    const wtLabel = (course.weekType && course.weekType !== 'both') ? ` • ${course.weekType === 'odd' ? 'Odd' : 'Even'} week` : '';
+    html += `<div class="course-time">${course.startTime} - ${course.endTime}${wtLabel}</div>`;
+    if (course.name) {
+        html += `<div class="course-name">${course.name}</div>`;
+    }
     if (course.location) {
         html += `<div class="course-location">📍 ${course.location}</div>`;
     }
@@ -210,14 +254,17 @@ function renderCourseList() {
     const container = document.getElementById('courseListContainer');
     container.innerHTML = '';
     
-    if (courses.length === 0) {
-        container.innerHTML = '<div class="empty-state">No courses added yet. Click "Add Course" to get started! 🎓</div>';
+    // Filter by view for list as well
+    const filtered = courses.filter(c => matchWeekFilter((c.weekType || 'both'), currentWeekFilter));
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="empty-state">No courses in this view. Switch the week filter or click "Add Course" to get started! 🎓</div>';
         return;
     }
     
     // Sort courses by day and time
     const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const sortedCourses = [...courses].sort((a, b) => {
+    const sortedCourses = [...filtered].sort((a, b) => {
         const dayCompare = dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
         if (dayCompare !== 0) return dayCompare;
         return a.startTime.localeCompare(b.startTime);
@@ -230,7 +277,7 @@ function renderCourseList() {
         
         let html = `
             <div class="course-item-header">
-                <div class="course-item-name">${course.name}</div>
+                <div class="course-item-code">${course.code}</div>
                 <div class="course-item-actions">
                     <button onclick="editCourse('${course.id}')" title="Edit">✏️</button>
                     <button onclick="deleteCourse('${course.id}')" title="Delete">🗑️</button>
@@ -238,7 +285,7 @@ function renderCourseList() {
             </div>
             <div class="course-item-info">
                 <div>📅 ${course.day}</div>
-                <div>⏰ ${course.startTime} - ${course.endTime}</div>
+                <div>⏰ ${course.startTime} - ${course.endTime}${(course.weekType && course.weekType !== 'both') ? ` • ${course.weekType === 'odd' ? 'Odd' : 'Even'} week` : ''}</div>
         `;
         
         if (course.instructor) {
@@ -254,6 +301,12 @@ function renderCourseList() {
     });
 }
 
+function matchWeekFilter(courseWeekType, filter) {
+    if (filter === 'both') return true;
+    if (courseWeekType === 'both') return true;
+    return courseWeekType === filter;
+}
+
 // Storage functions
 function saveCoursesToStorage() {
     localStorage.setItem('timetable-courses', JSON.stringify(courses));
@@ -264,6 +317,11 @@ function loadCoursesFromStorage() {
     if (stored) {
         try {
             courses = JSON.parse(stored);
+            // Normalize older records
+            courses = Array.isArray(courses) ? courses.map(c => ({
+                ...c,
+                weekType: c.weekType || 'both'
+            })) : [];
         } catch (e) {
             console.error('Error loading courses from storage:', e);
             courses = [];
@@ -290,7 +348,10 @@ function importCourses(file) {
             const importedCourses = JSON.parse(e.target.result);
             if (Array.isArray(importedCourses)) {
                 if (confirm('This will replace all existing courses. Continue?')) {
-                    courses = importedCourses;
+                    courses = importedCourses.map(c => ({
+                        ...c,
+                        weekType: c.weekType || 'both'
+                    }));
                     saveCoursesToStorage();
                     renderTimetable();
                     renderCourseList();
@@ -307,10 +368,86 @@ function importCourses(file) {
     importFile.value = '';
 }
 
+// 快速搜索时间函数
+function setupTimeQuickPickersMinute() {
+    const startQuick = document.getElementById('courseStartMinuteQuick');
+    const endQuick = document.getElementById('courseEndMinuteQuick');
+    const startInput = document.getElementById('courseStartTime');
+    const endInput = document.getElementById('courseEndTime');
+    if (startQuick && startInput) {
+        startQuick.addEventListener('change', () => applyMinuteQuick(startInput, startQuick));
+    }
+    if (endQuick && endInput) {
+        endQuick.addEventListener('change', () => applyMinuteQuick(endInput, endQuick));
+    }
+}
+
+function setupTimeQuickPickersHour() {
+    const startQuick = document.getElementById('courseStartHourQuick');
+    const endQuick = document.getElementById('courseEndHourQuick');
+    const startInput = document.getElementById('courseStartTime');
+    const endInput = document.getElementById('courseEndTime');
+    if (startQuick && startInput) {
+        startQuick.addEventListener('change', () => applyHourQuick(startInput, startQuick));
+    }
+    if (endQuick && endInput) {
+        endQuick.addEventListener('change', () => applyHourQuick(endInput, endQuick));
+    }
+}
+
+function applyMinuteQuick(timeInput, quickSelect) {
+    const val = quickSelect.value;
+    if (!val) return;
+    // If timeInput has value, replace minutes; else set to HH:val using current hour or default 08
+    let hour = '08';
+    if (timeInput.value && /^\d{2}:\d{2}$/.test(timeInput.value)) {
+        hour = timeInput.value.split(':')[0];
+    }
+    timeInput.value = `${hour}:${val}`;
+}
+
+function applyHourQuick(timeInput, quickSelect) {
+    const val = quickSelect.value;
+    if (!val) return;
+    // Preserve minutes if present, otherwise default to 00
+    let minutes = '00';
+    if (timeInput.value && /^\d{2}:\d{2}$/.test(timeInput.value)) {
+        minutes = timeInput.value.split(':')[1];
+    }
+    timeInput.value = `${val}:${minutes}`;
+}
+
 // Utility functions
 function timeToMinutes(timeStr) {
     const [hours, minutes] = timeStr.split(':').map(Number);
     return hours * 60 + minutes;
+}
+
+// Title display mode
+let titleDisplayMode = 'code'; // 'code' | 'name'
+
+function setupTitleDisplayMode() {
+    const sel = document.getElementById('titleDisplayMode');
+    if (!sel) return;
+    // try load from storage
+    const saved = localStorage.getItem('timetable-title-mode');
+    if (saved === 'code' || saved === 'name') {
+        titleDisplayMode = saved;
+    }
+    sel.value = titleDisplayMode;
+    sel.addEventListener('change', () => {
+        titleDisplayMode = sel.value;
+        localStorage.setItem('timetable-title-mode', titleDisplayMode);
+        renderTimetable();
+        renderCourseList();
+    });
+}
+
+function getPrimaryTitle(course) {
+    if (titleDisplayMode === 'name') {
+        return course.name || course.code || '';
+    }
+    return course.code || course.name || '';
 }
 
 function getRandomColor() {

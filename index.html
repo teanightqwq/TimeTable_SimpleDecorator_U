@@ -9,62 +9,145 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 University Timetable</h1>
-            <p class="subtitle">Create your visually pleasing course schedule</p>
+            <h1>📚 大学时间表</h1>
+            <p class="subtitle">美化课程表工具</p>
         </header>
 
         <div class="controls">
-            <button id="addCourseBtn" class="btn btn-primary">+ Add Course</button>
-            <button id="clearAllBtn" class="btn btn-danger">Clear All</button>
-            <button id="exportBtn" class="btn btn-secondary">Export</button>
-            <button id="importBtn" class="btn btn-secondary">Import</button>
+            <button id="addCourseBtn" class="btn btn-primary">+ 添加课程</button>
+            <button id="clearAllBtn" class="btn btn-danger">- 直接开摆</button>
+            <button id="exportBtn" class="btn btn-secondary">导出成json</button>
+            <button id="importBtn" class="btn btn-secondary">导入json课表</button>
+            <select id="weekFilter" class="toolbar-select" title="Week view">
+                <option value="both">所有周</option>
+                <option value="odd">单周</option>
+                <option value="even">双周</option>
+            </select>
+            <select id="titleDisplayMode" class="toolbar-select" title="标题显示">
+                <option value="code">显示课程编号</option>
+                <option value="name">显示课程名称</option>
+            </select>
             <input type="file" id="importFile" accept=".json" style="display: none;">
         </div>
 
         <div id="courseModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2 id="modalTitle">Add Course</h2>
+                <h2 id="modalTitle">添加课程</h2>
                 <form id="courseForm">
                     <div class="form-group">
-                        <label for="courseName">Course Name:</label>
+                        <label for="courseCode">课程编号:</label>
+                        <input type="text" id="courseCode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseName">课程名称:</label>
                         <input type="text" id="courseName" required>
                     </div>
                     <div class="form-group">
-                        <label for="courseInstructor">Instructor:</label>
+                        <label for="courseInstructor">讲师:</label>
                         <input type="text" id="courseInstructor">
                     </div>
                     <div class="form-group">
-                        <label for="courseLocation">Location:</label>
+                        <label for="courseLocation">地点:</label>
                         <input type="text" id="courseLocation">
                     </div>
                     <div class="form-group">
-                        <label for="courseDay">Day:</label>
+                        <label for="courseDay">星期:</label>
                         <select id="courseDay" required>
-                            <option value="Monday">Monday</option>
-                            <option value="Tuesday">Tuesday</option>
-                            <option value="Wednesday">Wednesday</option>
-                            <option value="Thursday">Thursday</option>
-                            <option value="Friday">Friday</option>
-                            <option value="Saturday">Saturday</option>
-                            <option value="Sunday">Sunday</option>
+                            <option value="Monday">星期一</option>
+                            <option value="Tuesday">星期二</option>
+                            <option value="Wednesday">星期三</option>
+                            <option value="Thursday">星期四</option>
+                            <option value="Friday">星期五</option>
+                            <option value="Saturday">星期六</option>
+                            <option value="Sunday">星期天</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="courseStartTime">Start Time:</label>
-                        <input type="time" id="courseStartTime" required>
+                        <label for="courseWeekType">周期类型:</label>
+                        <select id="courseWeekType">
+                            <option value="both">每周</option>
+                            <option value="odd">单周</option>
+                            <option value="even">双周</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="courseEndTime">End Time:</label>
-                        <input type="time" id="courseEndTime" required>
+                        <label for="courseStartTime">上课时间:</label>
+                        <div class="time-input-group">
+                            <input type="time" id="courseStartTime" required>
+                            <select id="courseStartHourQuick" class="time-hour-quick" title="小时快捷选择">
+                                <option value="">HH</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                            </select>
+                            <select id="courseStartMinuteQuick" class="time-minute-quick" title="Minute quick select">
+                                <option value="">mm</option>
+                                <option value="00">00</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="courseColor">Color:</label>
+                        <label for="courseEndTime">下课时间:</label>
+                        <div class="time-input-group">
+                            <input type="time" id="courseEndTime" required>
+                            <select id="courseEndHourQuick" class="time-hour-quick" title="小时快捷选择">
+                                <option value="">HH</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                            </select>
+                            <select id="courseEndMinuteQuick" class="time-minute-quick" title="Minute quick select">
+                                <option value="">mm</option>
+                                <option value="00">00</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseColor">调色盘:</label>
                         <input type="color" id="courseColor" value="#4CAF50">
                     </div>
                     <div class="form-buttons">
-                        <button type="submit" class="btn btn-primary">Save Course</button>
-                        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">保存课程</button>
+                        <button type="button" id="cancelBtn" class="btn btn-secondary">取消</button>
                     </div>
                 </form>
             </div>
@@ -87,52 +170,56 @@
                     <div class="time-slot">18:00</div>
                     <div class="time-slot">19:00</div>
                     <div class="time-slot">20:00</div>
+                    <div class="time-slot">21:00</div>
+                    <div class="time-slot">22:00</div>
                 </div>
 
                 <div class="day-column" data-day="Monday">
-                    <div class="day-header">Monday</div>
+                    <div class="day-header">星期一</div>
                     <div class="day-content"></div>
                 </div>
 
                 <div class="day-column" data-day="Tuesday">
-                    <div class="day-header">Tuesday</div>
+                    <div class="day-header">星期二</div>
                     <div class="day-content"></div>
                 </div>
 
                 <div class="day-column" data-day="Wednesday">
-                    <div class="day-header">Wednesday</div>
+                    <div class="day-header">星期三</div>
                     <div class="day-content"></div>
                 </div>
 
                 <div class="day-column" data-day="Thursday">
-                    <div class="day-header">Thursday</div>
+                    <div class="day-header">星期四</div>
                     <div class="day-content"></div>
                 </div>
 
                 <div class="day-column" data-day="Friday">
-                    <div class="day-header">Friday</div>
+                    <div class="day-header">星期五</div>
                     <div class="day-content"></div>
                 </div>
 
                 <div class="day-column" data-day="Saturday">
-                    <div class="day-header">Saturday</div>
+                    <div class="day-header">星期六</div>
                     <div class="day-content"></div>
                 </div>
 
                 <div class="day-column" data-day="Sunday">
-                    <div class="day-header">Sunday</div>
+                    <div class="day-header">星期天</div>
                     <div class="day-content"></div>
                 </div>
             </div>
         </div>
 
         <div class="course-list">
-            <h2>📋 Course List</h2>
+            <h2>📋 我的课表</h2>
             <div id="courseListContainer"></div>
         </div>
 
         <footer>
-            <p>All data is stored locally in your browser 💾</p>
+            <p>所有数据都存储在浏览器中 💾</p>
+            <p>直接关闭浏览器会保存数据 ✔️</p>
+            <p>删除浏览器数据后会丢失时间表 ❗</p>
         </footer>
     </div>
 
