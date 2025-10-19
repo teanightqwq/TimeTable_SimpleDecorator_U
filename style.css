@@ -217,11 +217,103 @@ header h1 {
     margin-top: 25px;
 }
 
+#batchTimesContainer .slot-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+#batchTimesContainer .slot-row input[type="time"],
+#batchTimesContainer .slot-row select {
+    flex: 1;
+}
+
+#batchTimesContainer .slot-row button {
+    padding: 8px 12px;
+}
+
 .timetable-wrapper {
-    overflow-x: auto;
+    overflow-x: hidden;
     margin-bottom: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.calendar-panel {
+    background: #f7fafc;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-width: 300px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cal-title {
+    font-weight: 700;
+    color: #333;
+}
+
+.cal-nav {
+    padding: 6px 10px;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendar-weekdays div {
+    text-align: center;
+    font-weight: 600;
+    color: #667eea;
+}
+
+.calendar-day {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    min-height: 80px;
+    padding: 6px;
+    cursor: pointer;
+    transition: transform .1s ease;
+}
+
+.calendar-day:hover {
+    transform: translateY(-2px);
+}
+
+.calendar-day .date {
+    font-weight: 700;
+    color: #333;
+}
+
+.calendar-day .note {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.calendar-day.today {
+    border-color: #667eea;
 }
 
 .timetable {
@@ -234,9 +326,9 @@ header h1 {
 .time-column {
     border-right: 2px solid #e2e8f0;
 }
-
+/* 时间表头 */
 .time-header {
-    height: 50px;
+    height: 60px;
     background: #667eea;
     border-bottom: 2px solid #e2e8f0;
 }
@@ -261,7 +353,7 @@ header h1 {
 }
 
 .day-header {
-    height: 50px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -274,12 +366,12 @@ header h1 {
 
 .day-content {
     position: relative;
-    height: 780px;
+    height: 750px;
     background: linear-gradient(to bottom, 
-        transparent 0%, transparent calc(60px - 1px),
-        #e2e8f0 calc(60px - 1px), #e2e8f0 60px
+        transparent 0%, transparent calc(50px - 1px),
+        #e2e8f0 calc(50px - 1px), #e2e8f0 50px
     );
-    background-size: 100% 60px;
+    background-size: 100% 50px;
 }
 
 .course-block {
@@ -294,12 +386,19 @@ header h1 {
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .course-block:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     z-index: 10;
+}
+
+.course-code {
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-size: 1em;
 }
 
 .course-name {
@@ -438,4 +537,5 @@ footer {
     padding: 40px;
     color: #999;
     font-size: 1.1em;
+    white-space: nowrap;
 }

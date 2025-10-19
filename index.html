@@ -27,6 +27,7 @@
                 <option value="code">显示课程编号</option>
                 <option value="name">显示课程名称</option>
             </select>
+            <a class="btn btn-secondary" href="calendar.html" title="打开日历">打开日历</a>
             <input type="file" id="importFile" accept=".json" style="display: none;">
         </div>
 
@@ -112,8 +113,6 @@
                             <input type="time" id="courseEndTime" required>
                             <select id="courseEndHourQuick" class="time-hour-quick" title="小时快捷选择">
                                 <option value="">HH</option>
-                                <option value="06">06</option>
-                                <option value="07">07</option>
                                 <option value="08">08</option>
                                 <option value="09">09</option>
                                 <option value="10">10</option>
@@ -142,11 +141,25 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>批量添加时间段：</label>
+                        <div id="batchTimesContainer"></div>
+                        <button type="button" id="addTimeSlotBtn" class="btn btn-secondary" style="margin-top:8px;">+ 添加一段时间</button>
+                    </div>
+                    <div class="form-group">
                         <label for="courseColor">调色盘:</label>
                         <input type="color" id="courseColor" value="#4CAF50">
                     </div>
+                    <div class="form-group">
+                        <label for="courseMidtermDate">期中考试日期（可选）:</label>
+                        <input type="date" id="courseMidtermDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseFinalDate">期末考试日期（可选）:</label>
+                        <input type="date" id="courseFinalDate">
+                    </div>
                     <div class="form-buttons">
                         <button type="submit" class="btn btn-primary">保存课程</button>
+                        <button type="button" id="duplicateBtn" class="btn btn-secondary">复制为新课程</button>
                         <button type="button" id="cancelBtn" class="btn btn-secondary">取消</button>
                     </div>
                 </form>
