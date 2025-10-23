@@ -1,6 +1,9 @@
 # TimeTable_SimpleDecorator_U
 外观更舒服的大学时间表
 
+## 🎯 参考图
+<img width="2529" height="1412" alt="image" src="https://github.com/user-attachments/assets/5e8e2a1b-7807-41ad-bef2-f7d8906761d7" />
+
 ## 📚 想要看着更舒服的大学时间表？
 
 一个看着更舒服的更个性化网页时间表。它可以用于创建和管理大学课程表。所有数据都存储在浏览器中，以确保隐私和离线访问。
