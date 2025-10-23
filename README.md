@@ -1,128 +1,132 @@
 # TimeTable_SimpleDecorator_U
 外观更舒服的大学时间表
 
-## 📚 University Timetable - Simple Decorator
+## 📚 想要看着更舒服的大学时间表？
 
-A visually pleasing, modern web application for creating and managing university course timetables. All data is stored locally in your browser for privacy and offline access.
+一个看着更舒服的更个性化网页时间表。它可以用于创建和管理大学课程表。所有数据都存储在浏览器中，以确保隐私和离线访问。
 
-## ✨ Features
+## ✨ 基础功能
 
-- **Visual Timetable Grid**: Weekly view with time slots from 8:00 AM to 8:00 PM
-- **Add/Edit Courses**: Easy-to-use modal form for course management
-- **Course Details**: Track course name, instructor, location, day, and time
-- **Color Coding**: Assign custom colors to courses for easy identification
-- **Local Storage**: All data is automatically saved in your browser
-- **Export/Import**: Export your timetable as JSON and import it later
-- **Course List**: View all courses in a detailed list with edit and delete options
-- **Responsive Design**: Works on desktop, tablet, and mobile devices
-- **Modern UI**: Beautiful gradient background and smooth animations
+- **可视化时间表网格**: 每周视图，时间段从早上8:00到晚上8:00
+- **添加/编辑课程**: 易于使用的模态表单进行课程管理
+- **课程详情**: 可选记录课程名称、讲师、地点、日期和时间
+- **颜色编码**: 为课程分配自定义颜色，以便于分配识别
+- **本地存储**: 所有数据自动保存在您的浏览器中
+- **导入/导出**: 将您的课程表导出为JSON并稍后导入
+- **课程列表**: 以详细列表查看所有课程，并具有编辑和删除选项
+- **响应式设计**: 适用于桌面、平板和移动设备
+- **现代用户界面**: 漂亮的渐变背景和流畅的动画
 
-## 🚀 Getting Started
+## 🚀 开始使用
 
-### Option 1: Direct Use
-Simply open `index.html` in your web browser - no server required!
+### 选项 1: 直接使用
+只需在文件夹/浏览器中打开 `index.html` 即可，省去服务器步骤！
 
-### Option 2: Using a Local Server
+### 选项 2: 使用本地服务器
 ```bash
-# Using Python
+# 使用 Python
 python3 -m http.server 8080
 
-# Using Node.js
+# 使用 Node.js
 npx http-server -p 8080
 
-# Then open http://localhost:8080 in your browser
+# 然后在浏览器中打开 http://localhost:8080
 ```
 
-## 📖 How to Use
+## 📖 使用方法
 
-### Adding a Course
-1. Click the "+ Add Course" button
-2. Fill in the course details:
-   - Course Name (required)
-   - Instructor (optional)
-   - Location (optional)
-   - Day (required)
-   - Start Time (required)
-   - End Time (required)
-   - Color (customize the course color)
-3. Click "Save Course"
+### 添加课程
+1. 点击 "+ 添加课程" 按钮
+2. 填写课程详情：
+   课程信息：
+   - 课程编号（必填）
+   - 课程名称（必填）
+   - 讲师（选填）
+   - 地点（选填）
+   时间段：
+   - 星期（必填）
+   - 开始时间（必填）
+   - 结束时间（必填）
+   美化：
+   - 调色盘（自定义课程颜色）
+3. 点击 "保存课程"
 
-### Editing a Course
-- Click on a course block in the timetable, OR
-- Click the edit (✏️) button in the course list
+### 编辑已有课程
+- 点击时间表中的课程块，或
+- 点击课程列表中的编辑（✏️）按钮
 
-### Deleting a Course
-- Click the delete (🗑️) button in the course list
-- Confirm the deletion
+### 删除已有课程
+- 点击课程列表中的删除（🗑️）按钮
+- 确认删除
 
-### Exporting Your Timetable
-- Click the "Export" button to download a JSON file with all your courses
-- The file is named `timetable-YYYY-MM-DD.json`
+### 导出课程表
+- 点击 "导出" 按钮下载包含所有课程的 JSON 文件
+- 文件名为 `timetable-YYYY-MM-DD.json`
 
-### Importing a Timetable
-- Click the "Import" button
-- Select a previously exported JSON file
-- Confirm to replace your current timetable
+### 导入课程表
+- 点击 "导入" 按钮
+- 选择之前导出的 JSON 文件
+- 确认替换当前课程表
 
-### Clearing All Courses
-- Click the "Clear All" button
-- Confirm to delete all courses
+### 清空所有课程（开摆）
+- 点击 "清空所有" 按钮
+- 确认删除所有课程
 
-## 🎨 Customization
+## 🎨 自定义界面
 
-The website uses a modern color scheme with:
-- Purple gradient background
-- Blue primary buttons
-- Color-coded course blocks
-- Clean, card-based UI elements
+该网站使用现代配色方案：
+- 紫色渐变背景
+- 蓝色主按钮
+- 颜色编码的课程块
+- 干净的卡片式 UI 元素
 
-You can customize colors by editing the `style.css` file.
+您可以通过编辑 `style.css` 文件来自定义颜色。
 
-## 💾 Local Storage
+## 💾 本地存储
 
-All course data is stored in your browser's localStorage, which means:
-- ✅ Your data persists across browser sessions
-- ✅ No internet connection required
-- ✅ Complete privacy - data never leaves your device
-- ⚠️ Clearing browser data will delete your timetable
-- ⚠️ Data is not shared across different browsers or devices
+所有课程数据都存储在您浏览器的 localStorage 中，这意味着：
+- ✅ 您的数据在浏览器会话之间保持
+- ✅ 无需互联网连接
+- ✅ 完全隐私 - 数据永远不会离开您的设备
+- ⚠️ 清除浏览器数据将删除您的课程表
+- ⚠️ 数据不会在不同浏览器或设备之间共享
 
-## 🌐 Browser Compatibility
+## 🌐 浏览器兼容性
 
-Works on all modern browsers:
-- Chrome/Edge (recommended)
+适用于所有现代浏览器：
+- Chrome/Edge（推荐）
 - Firefox
 - Safari
-- Opera
 
-## 📱 Mobile Support
+## 📱 移动设备支持
 
-The responsive design adapts to different screen sizes:
-- Full timetable view on desktop
-- Scrollable timetable on mobile
-- Touch-friendly buttons and controls
+响应式设计适应不同的屏幕尺寸：
+- 桌面上的完整课程表视图
+- 移动设备上的可滚动课程表
+- 触摸友好的按钮和控件
+- ⚠️需要电脑开启服务器才能使用
 
-## 🛠️ Technology Stack
+## 🛠️ 技术栈
 
-- **HTML5**: Semantic markup
-- **CSS3**: Modern styling with flexbox and grid
-- **JavaScript (ES6+)**: Interactive functionality
-- **localStorage API**: Data persistence
+- **HTML5**: 语义化标记
+- **CSS3**: 使用 flexbox 和 grid 的现代样式
+- **JavaScript (ES6+)**: 交互功能
+- **localStorage API**: 数据持久性
 
-## 📄 Files
+## 📄 文件
 
-- `index.html` - Main HTML structure
-- `style.css` - Styling and layout
-- `script.js` - Application logic and functionality
+- `index.html` - 主要 HTML 结构
+- `style.css` - 样式和布局
+- `script.js` - 应用程序逻辑和功能
 
-## 📸 Screenshots
+## 📸 截图
 
-See the application in action with the screenshots in the pull request!
+全屏截图以获得最佳截图体验！
 
-## 🤝 Contributing
+## 🤝 贡献
 
-Feel free to submit issues and enhancement requests!
+欢迎提交问题和增强请求！
 
-## 📝 License
+## 📝 许可证
 
-This project is open source and available for educational purposes.
+该项目是开源的，供教育用途。
