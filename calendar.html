@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日历备忘 - 大学时间表</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📅 日历备忘</h1>
+      <p class="subtitle">记录功课、特殊日期、考试安排</p>
+    </header>
+
+    <div class="controls">
+      <a class="btn btn-secondary" href="index.html">← 返回课程表</a>
+    </div>
+
+    <aside class="calendar-panel" style="max-width: 900px; margin: 0 auto;">
+      <div class="calendar-header">
+        <button id="calPrevBtn" class="btn btn-secondary cal-nav">〈</button>
+        <div id="calTitle" class="cal-title">2025 年 10 月</div>
+        <button id="calNextBtn" class="btn btn-secondary cal-nav">〉</button>
+      </div>
+      <div class="calendar-weekdays">
+        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+      </div>
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </aside>
+  </div>
+
+  <!-- 备注模态 -->
+  <div id="noteModal" class="modal">
+    <div class="modal-content">
+      <span id="noteClose" class="close">&times;</span>
+      <h2 id="noteModalTitle">添加备注</h2>
+      <div class="form-group">
+        <label for="noteText">备注内容：</label>
+        <textarea id="noteText" rows="8" style="width:100%; padding:10px; border:2px solid #e2e8f0; border-radius:8px;"></textarea>
+      </div>
+      <div class="form-buttons">
+        <button id="noteSaveBtn" class="btn btn-primary">保存</button>
+        <button id="noteDeleteBtn" class="btn btn-danger">删除备注</button>
+        <button id="noteCancelBtn" class="btn btn-secondary">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="calendar.js"></script>
+</body>
+</html>

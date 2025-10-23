@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Timetable - Simple Decorator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 大学时间表</h1>
+            <p class="subtitle">美化课程表工具</p>
+        </header>
+
+        <div class="controls">
+            <button id="addCourseBtn" class="btn btn-primary">+ 添加课程</button>
+            <button id="clearAllBtn" class="btn btn-danger">- 直接开摆</button>
+            <button id="exportBtn" class="btn btn-secondary">导出成json</button>
+            <button id="importBtn" class="btn btn-secondary">导入json课表</button>
+            <select id="weekFilter" class="toolbar-select" title="Week view">
+                <option value="both">所有周</option>
+                <option value="odd">单周</option>
+                <option value="even">双周</option>
+            </select>
+            <select id="titleDisplayMode" class="toolbar-select" title="标题显示">
+                <option value="code">显示课程编号</option>
+                <option value="name">显示课程名称</option>
+            </select>
+            <a class="btn btn-secondary" href="calendar.html" title="打开日历">打开日历</a>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+        </div>
+
+        <div id="courseModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalTitle">添加课程</h2>
+                <form id="courseForm">
+                    <h3 class="form-section-title">课程信息</h3>
+                    <div class="form-group">
+                        <label for="courseCode">课程编号:</label>
+                        <input type="text" id="courseCode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseName">课程名称:</label>
+                        <input type="text" id="courseName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseInstructor">讲师:</label>
+                        <input type="text" id="courseInstructor">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseLocation">地点:</label>
+                        <input type="text" id="courseLocation">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseMidtermDate">期中考试日期（可选）:</label>
+                        <input type="date" id="courseMidtermDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseFinalDate">期末考试日期（可选）:</label>
+                        <input type="date" id="courseFinalDate">
+                    </div>
+
+                    <h3 class="form-section-title">时间段</h3>
+                    <div class="form-group">
+                        <div id="batchTimesContainer"></div>
+                        <button type="button" id="addTimeSlotBtn" class="btn btn-secondary" style="margin-top:8px;">+ 添加时间段</button>
+                    </div>
+
+                    <h3 class="form-section-title">美化</h3>
+                    <div class="form-group">
+                        <label for="courseColor">调色盘:</label>
+                        <input type="color" id="courseColor" value="#4CAF50">
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">保存课程</button>
+                        <button type="button" id="duplicateBtn" class="btn btn-secondary">复制为新课程</button>
+                        <button type="button" id="cancelBtn" class="btn btn-secondary">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="timetable-wrapper">
+            <div class="timetable" id="timetable">
+                <div class="time-column">
+                    <div class="time-header"></div>
+                    <div class="time-slot">08:00</div>
+                    <div class="time-slot">09:00</div>
+                    <div class="time-slot">10:00</div>
+                    <div class="time-slot">11:00</div>
+                    <div class="time-slot">12:00</div>
+                    <div class="time-slot">13:00</div>
+                    <div class="time-slot">14:00</div>
+                    <div class="time-slot">15:00</div>
+                    <div class="time-slot">16:00</div>
+                    <div class="time-slot">17:00</div>
+                    <div class="time-slot">18:00</div>
+                    <div class="time-slot">19:00</div>
+                    <div class="time-slot">20:00</div>
+                    <div class="time-slot">21:00</div>
+                    <div class="time-slot">22:00</div>
+                </div>
+
+                <div class="day-column" data-day="Monday">
+                    <div class="day-header">星期一</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Tuesday">
+                    <div class="day-header">星期二</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Wednesday">
+                    <div class="day-header">星期三</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Thursday">
+                    <div class="day-header">星期四</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Friday">
+                    <div class="day-header">星期五</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Saturday">
+                    <div class="day-header">星期六</div>
+                    <div class="day-content"></div>
+                </div>
+
+                <div class="day-column" data-day="Sunday">
+                    <div class="day-header">星期天</div>
+                    <div class="day-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-list">
+            <h2>📋 我的课表</h2>
+            <div id="courseListContainer"></div>
+        </div>
+
+        <footer>
+            <p>所有数据都存储在浏览器中 💾</p>
+            <p>直接关闭浏览器会保存数据 ✔️</p>
+            <p>删除浏览器数据后会丢失时间表 ❗</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
