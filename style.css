@@ -217,20 +217,53 @@ header h1 {
     margin-top: 25px;
 }
 
-#batchTimesContainer .slot-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin-top: 8px;
+.form-section-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #333;
+    border-left: 4px solid #667eea;
+    padding-left: 8px;
 }
 
-#batchTimesContainer .slot-row input[type="time"],
-#batchTimesContainer .slot-row select {
+#batchTimesContainer .slot-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fafbff;
+}
+
+#batchTimesContainer .slot-row .slot-line {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#batchTimesContainer .slot-row .slot-line-top {
+    margin-bottom: 2px;
+}
+
+#batchTimesContainer .slot-row .slot-line label {
+    font-weight: 600;
+    color: #555;
+}
+
+#batchTimesContainer .slot-row .line-fields {
+    display: flex;
+    gap: 8px;
+}
+
+#batchTimesContainer .slot-row .line-fields select,
+#batchTimesContainer .slot-row .line-fields input[type="time"] {
     flex: 1;
 }
 
-#batchTimesContainer .slot-row button {
-    padding: 8px 12px;
+#batchTimesContainer .slot-row .slot-actions {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .timetable-wrapper {
@@ -318,8 +351,7 @@ header h1 {
 
 .timetable {
     display: grid;
-    grid-template-columns: 80px repeat(7, 1fr);
-    min-width: 900px;
+    grid-template-columns: minmax(60px, 80px) repeat(7, 1fr);
     background: white;
 }
 
@@ -520,7 +552,7 @@ footer {
     }
 
     .timetable {
-        grid-template-columns: 60px repeat(7, 120px);
+        grid-template-columns: minmax(50px, 70px) repeat(7, 1fr);
     }
 
     .time-input-group {

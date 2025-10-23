@@ -36,6 +36,7 @@
                 <span class="close">&times;</span>
                 <h2 id="modalTitle">添加课程</h2>
                 <form id="courseForm">
+                    <h3 class="form-section-title">课程信息</h3>
                     <div class="form-group">
                         <label for="courseCode">课程编号:</label>
                         <input type="text" id="courseCode" required>
@@ -53,103 +54,6 @@
                         <input type="text" id="courseLocation">
                     </div>
                     <div class="form-group">
-                        <label for="courseDay">星期:</label>
-                        <select id="courseDay" required>
-                            <option value="Monday">星期一</option>
-                            <option value="Tuesday">星期二</option>
-                            <option value="Wednesday">星期三</option>
-                            <option value="Thursday">星期四</option>
-                            <option value="Friday">星期五</option>
-                            <option value="Saturday">星期六</option>
-                            <option value="Sunday">星期天</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="courseWeekType">周期类型:</label>
-                        <select id="courseWeekType">
-                            <option value="both">每周</option>
-                            <option value="odd">单周</option>
-                            <option value="even">双周</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="courseStartTime">上课时间:</label>
-                        <div class="time-input-group">
-                            <input type="time" id="courseStartTime" required>
-                            <select id="courseStartHourQuick" class="time-hour-quick" title="小时快捷选择">
-                                <option value="">HH</option>
-                                <option value="06">06</option>
-                                <option value="07">07</option>
-                                <option value="08">08</option>
-                                <option value="09">09</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                                <option value="13">13</option>
-                                <option value="14">14</option>
-                                <option value="15">15</option>
-                                <option value="16">16</option>
-                                <option value="17">17</option>
-                                <option value="18">18</option>
-                                <option value="19">19</option>
-                                <option value="20">20</option>
-                                <option value="21">21</option>
-                                <option value="22">22</option>
-                            </select>
-                            <select id="courseStartMinuteQuick" class="time-minute-quick" title="Minute quick select">
-                                <option value="">mm</option>
-                                <option value="00">00</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="40">40</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="courseEndTime">下课时间:</label>
-                        <div class="time-input-group">
-                            <input type="time" id="courseEndTime" required>
-                            <select id="courseEndHourQuick" class="time-hour-quick" title="小时快捷选择">
-                                <option value="">HH</option>
-                                <option value="08">08</option>
-                                <option value="09">09</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                                <option value="13">13</option>
-                                <option value="14">14</option>
-                                <option value="15">15</option>
-                                <option value="16">16</option>
-                                <option value="17">17</option>
-                                <option value="18">18</option>
-                                <option value="19">19</option>
-                                <option value="20">20</option>
-                                <option value="21">21</option>
-                                <option value="22">22</option>
-                            </select>
-                            <select id="courseEndMinuteQuick" class="time-minute-quick" title="Minute quick select">
-                                <option value="">mm</option>
-                                <option value="00">00</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="40">40</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>批量添加时间段：</label>
-                        <div id="batchTimesContainer"></div>
-                        <button type="button" id="addTimeSlotBtn" class="btn btn-secondary" style="margin-top:8px;">+ 添加一段时间</button>
-                    </div>
-                    <div class="form-group">
-                        <label for="courseColor">调色盘:</label>
-                        <input type="color" id="courseColor" value="#4CAF50">
-                    </div>
-                    <div class="form-group">
                         <label for="courseMidtermDate">期中考试日期（可选）:</label>
                         <input type="date" id="courseMidtermDate">
                     </div>
@@ -157,6 +61,19 @@
                         <label for="courseFinalDate">期末考试日期（可选）:</label>
                         <input type="date" id="courseFinalDate">
                     </div>
+
+                    <h3 class="form-section-title">时间段</h3>
+                    <div class="form-group">
+                        <div id="batchTimesContainer"></div>
+                        <button type="button" id="addTimeSlotBtn" class="btn btn-secondary" style="margin-top:8px;">+ 添加时间段</button>
+                    </div>
+
+                    <h3 class="form-section-title">美化</h3>
+                    <div class="form-group">
+                        <label for="courseColor">调色盘:</label>
+                        <input type="color" id="courseColor" value="#4CAF50">
+                    </div>
+
                     <div class="form-buttons">
                         <button type="submit" class="btn btn-primary">保存课程</button>
                         <button type="button" id="duplicateBtn" class="btn btn-secondary">复制为新课程</button>
